@@ -1,0 +1,61 @@
+# =============================================================================
+# Supply Chain Control Tower — Configuration
+# =============================================================================
+# All thresholds below are ASSUMED operational targets for this case study.
+# They are documented explicitly because the DataCo dataset ships with no
+# official SLA targets. In a real Flipkart/NEEV engagement these would be
+# pulled from the network's Ops/CX SLA charter instead of being assumed.
+# =============================================================================
+
+paths:
+  raw_csv: "data/raw/DataCoSupplyChainDataset.csv"
+  sqlite_db: "data/processed/control_tower.db"
+  processed_dir: "data/processed"
+  reports_dir: "reports"
+
+encoding: "latin1"   # source file is ISO-8859-1 encoded
+
+# ---------------------------------------------------------------------------
+# KPI TARGETS (assumed, clearly labelled as such throughout the app/docs)
+# ---------------------------------------------------------------------------
+kpi_targets:
+  on_time_delivery_pct: 85.0        # % of orders delivered on/before scheduled days
+  late_delivery_pct: 15.0           # inverse of on-time target
+  sla_adherence_pct: 85.0           # same basis as on-time delivery (order-item level)
+  avg_shipping_days_target: 3.5     # days for shipping (real), target ceiling
+  cancelled_order_pct: 3.0          # Order Status = CANCELED or SUSPECTED_FRAUD
+  profit_margin_pct: 10.0           # Order Profit Per Order / Sales per customer
+
+# ---------------------------------------------------------------------------
+# RCA / analysis parameters
+# ---------------------------------------------------------------------------
+rca:
+  baseline_months: 3          # trailing months used as baseline window
+  current_months: 1           # most recent month(s) treated as "current period"
+  dimensions:                 # drill-down dimensions actually present in data
+    # names match the SQLite fact_order_items column names (see sql/schema.sql)
+    - "order_region"
+    - "market"
+    - "shipping_mode"
+    - "category_name"
+    - "customer_segment"
+    - "order_status"
+  min_segment_orders: 30      # ignore segments with too few orders (unstable rates)
+  significance_alpha: 0.05    # for two-proportion z-test (association, not causation)
+
+spc:
+  sigma_limits: 3             # +/- 3 sigma control limits for p-charts
+  min_periods: 8               # minimum periods required to fit a control chart
+
+pareto:
+  cutoff_pct: 80.0             # classic 80/20 cutoff line
+
+# ---------------------------------------------------------------------------
+# Fields explicitly NOT used because the dataset does not support them
+# (documented per project instructions — do not invent unsupported KPIs)
+# ---------------------------------------------------------------------------
+excluded_kpis_reason: >
+  Warehouse picking time, dock-to-stock time, inventory turns, and
+  FC-level labor productivity are NOT computed because the DataCo dataset
+  contains no warehouse operations timestamps — only order-to-ship-to-
+  delivery level data at the order-item grain.

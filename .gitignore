@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.db
+data/processed/*.db
+data/processed/*.json
+data/raw/*.csv
+!data/raw/.gitkeep
+.streamlit/secrets.toml
+.DS_Store
+*.log
+reports/*.md
+!reports/.gitkeep
+.pytest_cache/
+*.egg-info/
