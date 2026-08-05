@@ -235,7 +235,7 @@ This creates a structured investigation path instead of simply displaying charts
 
 The system performs Pareto analysis to determine whether failures are concentrated in a small number of operational segments.
 
-![Regional Pareto Analysis](assets/pareto_regions.png)
+![Regional Pareto Analysis](pareto_regions.png)
 
 An important result from the dataset is that late deliveries **do not exhibit a classic 80/20 regional concentration**.
 
@@ -283,7 +283,7 @@ The pipeline was executed on the complete **180,519-row DataCo dataset**.
 | Average shipping time | **3.46 days** |
 | SPC violations | **16 / 162 weeks** |
 
-![KPI Status](assets/kpi_status.png)
+![KPI Status](kpi_status.png)
 
 ---
 
@@ -533,9 +533,8 @@ scc-control-tower/
 │   ├── interview_guide.md
 │   └── resume_bullets.md
 │
-├── assets/
-│   ├── kpi_status.png
-│   └── pareto_regions.png
+├── kpi_status.png
+└── pareto_regions.png
 │
 ├── requirements.txt
 └── README.md
